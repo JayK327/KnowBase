@@ -1,0 +1,48 @@
+[project]
+name = "rag-chatbot-platform"
+version = "1.0.0"
+requires-python = ">=3.11,<3.13"
+
+dependencies = [
+    "openai",
+    "langchain",
+    "langchain-openai",
+    "tiktoken",
+    "faiss-cpu",
+    "rank-bm25",
+    "cohere",
+    "unstructured[pdf,docx]",
+    "pypdf",
+    "python-docx",
+    "beautifulsoup4",
+    "pdfminer.six",
+    "numpy",
+    "pandas",
+    "datasets",
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "pydantic-settings",
+    "python-multipart",
+    "ragas",
+    "mlflow",
+    "python-dotenv",
+    "loguru",
+    "tenacity",
+    "pyyaml",
+    "omegaconf"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "black",
+    "ruff",
+    "ipykernel"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

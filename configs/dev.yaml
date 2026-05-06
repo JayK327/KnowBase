@@ -1,0 +1,24 @@
+# configs/dev.yaml  —  overrides base.yaml for local development
+# This env is for has more logging, relaxed limits and local/testing config
+app:
+  log_level: "DEBUG"
+
+ingestion:
+  embedding:
+    batch_size: 20
+  chunking:
+    parent_chunk_size: 512
+    child_chunk_size: 128
+
+retrieval:
+  hyde:
+    enabled: false              # disable HyDE for faster iteration
+  reranker:
+    enabled: false
+
+generation:
+  llm:
+    model: "gpt-4o-mini"        
+
+evaluation:
+  eval_dataset_path: "data/eval/qa_pairs_small.json"

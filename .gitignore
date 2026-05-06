@@ -1,0 +1,62 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Poetry
+poetry.lock
+# (optional: keep it if you want reproducible builds)
+
+# Environment variables (SECRETS!)
+.env
+.env.*
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs / Editors
+.vscode/
+.idea/
+
+# Python testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking
+.mypy_cache/
+
+# Ruff / lint cache
+.ruff_cache/
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# ML / RAG specific
+data/faiss_index/
+data/bm25_index/
+mlflow.db
+mlruns/
+
+# Temporary files
+tmp/
+temp/
+
+# Docker (optional)
+*.pid
+*.sock

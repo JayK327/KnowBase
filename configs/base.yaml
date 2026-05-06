@@ -1,0 +1,71 @@
+# configs/base.yaml
+
+app:
+  name: "rag-chatbot-platform"
+  version: "1.0.0"
+  log_level: "INFO"
+
+ingestion:
+  extraction:
+    supported_formats: ["pdf", "docx", "html", "txt", "md"]
+    encoding: "utf-8"
+
+  chunking:
+    strategy: "hierarchical"
+    parent_chunk_size: 512        # tokens  →  stored for LLM context
+    child_chunk_size: 128         # tokens  →  what gets embedded
+    parent_overlap: 50
+    child_overlap: 20
+    encoding_model: "cl100k_base"
+
+  embedding:
+    provider: "openai"
+    model: "text-embedding-3-large"
+    embedding_dim: 3072
+    batch_size: 100
+
+  vector_store:
+    provider: "faiss"
+    index_path: "data/faiss_index"
+
+retrieval:
+  hybrid:
+    dense_weight: 0.6
+    rrf_k: 60
+    top_k_dense: 20
+    top_k_sparse: 20
+    top_k_final: 5
+
+  hyde:
+    enabled: true
+    model: "gpt-4o-mini"
+    max_tokens: 200
+    temperature: 0.3
+
+  reranker:
+    enabled: true
+    provider: "cohere"             # cohere | cross-encoder | none
+    model: "rerank-english-v3.0"
+    relevance_threshold: 0.35
+
+generation:
+  llm:
+    model: "gpt-4o"
+    max_tokens: 1024
+    temperature: 0.1
+    streaming: true
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins: ["http://localhost:3000"]
+  rate_limit:
+    requests_per_minute: 60
+  auth:
+    enabled: false
+
+evaluation:
+  mlflow:
+    tracking_uri: "sqlite:///mlflow.db"
+    experiment_name: "rag_evaluation"
+  eval_dataset_path: "data/eval/qa_pairs.json"

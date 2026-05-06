@@ -1,0 +1,339 @@
+{
+  "corpus_stats": {
+    "num_documents": 6,
+    "num_parent_chunks": 90,
+    "num_child_chunks": 348,
+    "total_chars": 49153,
+    "documents": [
+      "api_contracts.md",
+      "data_catalog.md",
+      "data_governance.md",
+      "etl_pipeline_guide.md",
+      "incident_runbook.md",
+      "ml_feature_store.md"
+    ]
+  },
+  "evaluation_config": {
+    "K": 10,
+    "parent_words": 80,
+    "child_words": 24,
+    "rrf_k": 60,
+    "dense_weight": 0.6,
+    "relevance_threshold": 0.08
+  },
+  "retrieval_metrics": {
+    "Dense (TF-IDF)": {
+      "MRR@10": 0.3818,
+      "NDCG@10": 0.2941,
+      "Recall@10": 0.3667,
+      "Precision@10": 0.1467,
+      "HitRate@10": 0.6667
+    },
+    "Sparse (BM25)": {
+      "MRR@10": 0.4403,
+      "NDCG@10": 0.3282,
+      "Recall@10": 0.3667,
+      "Precision@10": 0.1467,
+      "HitRate@10": 0.7333
+    },
+    "Hybrid (RRF)": {
+      "MRR@10": 0.4456,
+      "NDCG@10": 0.3529,
+      "Recall@10": 0.4167,
+      "Precision@10": 0.1667,
+      "HitRate@10": 0.7333
+    }
+  },
+  "generation_metrics": {
+    "rouge_l": {
+      "mean": 0.137,
+      "std": 0.0403,
+      "min": 0.0606,
+      "max": 0.2034,
+      "p25": 0.1153,
+      "p75": 0.1691
+    },
+    "context_precision": {
+      "mean": 0.96,
+      "std": 0.1497,
+      "min": 0.4,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0
+    },
+    "context_recall": {
+      "mean": 0.4768,
+      "std": 0.206,
+      "min": 0.05,
+      "max": 0.8182,
+      "p25": 0.3541,
+      "p75": 0.6667
+    },
+    "faithfulness": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0
+    },
+    "answer_relevancy": {
+      "mean": 0.9765,
+      "std": 0.075,
+      "min": 0.7,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0
+    }
+  },
+  "per_question": [
+    {
+      "question": "What is the primary key of the users table?",
+      "ground_truth": "The primary key of the users table is user_id, which is a UUID type. It is generated at registration and is immutable.",
+      "answer": "| sessions_last_30d | INTEGER | Session count in the past 30 days | | avg_session_duration_7d | FLOAT | Average session duration (seconds) over 7 days | | event_count_last_7d | INTEGER | Total event count in the past 7 days | | page_views_last_7d | INTEGER | Page view count in the past 7 days | | feature_adoption_score | FLOAT | Fraction of key features used (0. | | user_id | UUID | No | Foreign key \u2192 users. 9` **What it means:** More than 10% of users don't have feature values in Redis ### Triage 1. users imported from the 2022 acquisition --- ## Table: orders **Purpose:** All purchase transactions including one-time purchases and subscription renewals.",
+      "rouge_l": 0.1111,
+      "context_precision": 1.0,
+      "context_recall": 0.4,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "ml_feature_store.md",
+        "incident_runbook.md",
+        "data_catalog.md"
+      ],
+      "mrr_hybrid": 0.0,
+      "recall_hybrid": 0.0
+    },
+    {
+      "question": "What columns does the orders table have?",
+      "ground_truth": "The orders table has order_id (UUID primary key), user_id (foreign key), product_id, status, amount_usd, currency, amount_local, exchange_rate, created_at, updated_at, payment_method, refunded_at, and metadata columns.",
+      "answer": "Add the table to the data quality monitoring dashboard 6. Document the table in data_catalog. Fix: The funnel query does a large cross join. Fix: The partition exists in the table.",
+      "rouge_l": 0.0606,
+      "context_precision": 1.0,
+      "context_recall": 0.05,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "data_governance.md",
+        "data_catalog.md",
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 0.1429,
+      "recall_hybrid": 0.25
+    },
+    {
+      "question": "How often does the event_ingestor pipeline run?",
+      "ground_truth": "The event_ingestor is a continuous Spark Structured Streaming pipeline that runs as a micro-batch every 2 minutes.",
+      "answer": "Used by the event_ingestor pipeline to validate incoming events. **Cause C: Schema registry unreachable** The event_ingestor calls the event. The computation jobs run after the `daily_aggregator` pipeline completes. Fix: The funnel query does a large cross join.",
+      "rouge_l": 0.2034,
+      "context_precision": 1.0,
+      "context_recall": 0.4545,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "ml_feature_store.md",
+        "data_catalog.md",
+        "api_contracts.md",
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 0.0,
+      "recall_hybrid": 0.0
+    },
+    {
+      "question": "What is the SLA for the Silver layer lag in the event_ingestor pipeline?",
+      "ground_truth": "The SLA states that Silver layer lag must not exceed 5 minutes from Kafka produce time.",
+      "answer": "BI dashboards broken | 15 min ack, 2 hr resolve | daily_aggregator failed, no data for today | | P2 | Data delayed > 2x SLA | 30 min ack, 4 hr resolve | Silver layer lag > 10 minutes | | P3 | Data quality issue; data present but partially incorrect | 2 hr ack, next business day resolve | Null rate spike in one column | | P4 | Informational; no immediate user impact | Next business day. ### Failure Runbook **Symptom:** Silver layer lag exceeds 5 minutes (monitored via Datadog metric `event_ingestor. If lag is growing, check Spark executor logs for OOM errors 3. **Schedule:** Continuous Spark Structured Streaming (micro-batch every 2 minutes) **SLA:** Silver layer lag must not exceed 5 minutes from Kafka produce time **Owner:** Platform Data Engineering (pde-team@datachat.",
+      "rouge_l": 0.1912,
+      "context_precision": 1.0,
+      "context_recall": 0.8182,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "etl_pipeline_guide.md",
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 1.0,
+      "recall_hybrid": 1.0
+    },
+    {
+      "question": "How should I fix a corrupted checkpoint in the event_ingestor job?",
+      "ground_truth": "Delete the checkpoint directory using: aws s3 rm s3://datachat-checkpoints/event_ingestor/ --recursive, then restart the job. It will re-read from the last committed Kafka offset. Afterwards run the deduplication job with: python ops/deduplicate_events.py --hours-back 2",
+      "answer": "**Cause D: Checkpoint corruption** After an ungraceful pod restart, the Spark checkpoint directory can become corrupted. If it does, there is a bug in the user_sync pipeline. In the meantime, trigger a run with `--skip-column-validation` flag. In the streaming job config, set `spark.",
+      "rouge_l": 0.1818,
+      "context_precision": 1.0,
+      "context_recall": 0.4091,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "etl_pipeline_guide.md",
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 0.0,
+      "recall_hybrid": 0.0
+    },
+    {
+      "question": "What is the retention policy for the users table?",
+      "ground_truth": "The users table has a 7-year retention policy due to GDPR compliance requirements.",
+      "answer": "This is the source table for all downstream behavioral analytics. username` \u2192 replaced with null - All `user_events` rows for the user \u2192 hard deleted (Bronze and Silver) - All `sessions` rows \u2192 user_id set to null (anonymous) - Feature store online: immediate deletion - Feature store offline: partition drop on next daily run 5. Configure retention schedule in the lifecycle management config 4. sessions` for the user 4.",
+      "rouge_l": 0.0769,
+      "context_precision": 1.0,
+      "context_recall": 0.25,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "data_governance.md",
+        "data_catalog.md"
+      ],
+      "mrr_hybrid": 0.1667,
+      "recall_hybrid": 0.25
+    },
+    {
+      "question": "What is the churn prediction model version and what threshold triggers an email campaign?",
+      "ground_truth": "The churn prediction model is version 3.2, built with XGBoost. A churn_probability_score of 0.65 or above triggers an automated email campaign.",
+      "answer": "internal:8084` **Protocol:** REST/JSON **Auth:** Bearer token with `ml:inference` scope ### POST /v1/models/churn/predict Runs the churn prediction model for a batch of users. 65 triggers automated email campaign ### Fraud Detection Model (v1. to_dict() ``` --- ## Models Using This Feature Store ### Churn Prediction Model (v3. | |---|---|---| | login_failure_count_24h | INTEGER | Failed login attempts in the last 24 hours | | ip_country_mismatch | BOOLEAN | Profile country differs from session IP country | | velocity_orders_1h | INTEGER | Orders placed in the last 1 hour | | velocity_orders_24h | INTEGER | Orders placed in the last 24 hours | | churn_probability_score | FLOAT | Output of churn model v3.",
+      "rouge_l": 0.1732,
+      "context_precision": 1.0,
+      "context_recall": 0.6667,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "ml_feature_store.md",
+        "api_contracts.md"
+      ],
+      "mrr_hybrid": 1.0,
+      "recall_hybrid": 0.75
+    },
+    {
+      "question": "What PII level is the email column in the users table?",
+      "ground_truth": "The email column in the users table is classified as Level 2 PII, which means it is directly identifiable. It is tokenised in downstream tables.",
+      "answer": "--- ## Column-Level PII Inventory | Table | Column | PII Level | Handling | |---|---|---|---| | users | user_id | Level 1 | UUID pseudonym | | users | email | Level 2 | Tokenised in downstream tables | | users | username | Level 2 | Masked in BI exports | | orders | user_id | Level. | Column | Description | |---|---| | access_id | UUID | | accessed_at | TIMESTAMP UTC | | accessor_email | The data team member's email | | table_name | Table accessed | | columns_accessed | Array of column names | | query_hash | MD5 of the query | | row_count | Approximate rows returned | | justification | Business justification (required for Level 2) | Audit logs are retained for 7 years. Complete the column-level PII inventory in this document 2. Level 3 data must never be written to the data warehouse.",
+      "rouge_l": 0.1194,
+      "context_precision": 1.0,
+      "context_recall": 0.5,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "data_governance.md"
+      ],
+      "mrr_hybrid": 0.5,
+      "recall_hybrid": 0.75
+    },
+    {
+      "question": "What does the daily_aggregator pipeline output?",
+      "ground_truth": "The daily_aggregator produces three Gold layer tables: gold.daily_active_users, gold.revenue_summary, and gold.funnel_metrics.",
+      "answer": "| Slow pipeline job, no SLA breach | --- ## Alert: Pipeline Failed \u2014 daily_aggregator **Alert name:** `daily_aggregator. This is the most resource-intensive pipeline. The computation jobs run after the `daily_aggregator` pipeline completes. Fix: The funnel query does a large cross join.",
+      "rouge_l": 0.1333,
+      "context_precision": 1.0,
+      "context_recall": 0.3333,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "ml_feature_store.md",
+        "etl_pipeline_guide.md",
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 0.5,
+      "recall_hybrid": 0.25
+    },
+    {
+      "question": "How do I perform a GDPR erasure for a user?",
+      "ground_truth": "Run python gdpr/erasure.py --user-id <uuid> and then verify with python gdpr/verify_erasure.py --user-id <uuid>. The erasure must complete within 30 days of the request.",
+      "answer": "--- ## Runbook: GDPR Erasure Emergency If a user reports that their data was not erased within the 30-day legal window: 1. user_id={user_id}&status={status}&limit={limit} List orders for a user with optional status filter. These rows cannot be hard-deleted even on GDPR erasure requests \u2014 instead, PII columns are overwritten with null values (\"right to erasure\" via pseudonymisation). --- ## GDPR Compliance Procedures ### Right to Access (Article 15) A user requests all data DataChat holds about them.",
+      "rouge_l": 0.1651,
+      "context_precision": 1.0,
+      "context_recall": 0.6667,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9474,
+      "retrieved_sources": [
+        "data_governance.md",
+        "api_contracts.md",
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 0.125,
+      "recall_hybrid": 0.5
+    },
+    {
+      "question": "What is the online feature store backend and what is its latency SLA?",
+      "ground_truth": "The online feature store is backed by Redis Cluster. The latency SLA is p99 under 5ms.",
+      "answer": "The feature store is built on Feast (Feature Store for Machine Learning) backed by Redis for online serving and Delta Lake for offline training. 2 standard deviations - Null rate of any feature increases by more than 5 percentage points - A feature's online store fill rate drops below 90% --- ## SLAs | Store | Freshness SLA | Latency SLA | |---|---|---| | Online (Redis) | Hourly features: <90 min lag; Daily features: <3 hour lag | p99 <5ms | | Offline (Delta Lake) | Daily features: available by 10:00 UTC | N/A (batch) |. username` \u2192 replaced with null - All `user_events` rows for the user \u2192 hard deleted (Bronze and Silver) - All `sessions` rows \u2192 user_id set to null (anonymous) - Feature store online: immediate deletion - Feature store offline: partition drop on next daily run 5. Feature is added to the Feast feature store registry 4.",
+      "rouge_l": 0.1486,
+      "context_precision": 1.0,
+      "context_recall": 0.6667,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "ml_feature_store.md",
+        "data_governance.md"
+      ],
+      "mrr_hybrid": 1.0,
+      "recall_hybrid": 0.75
+    },
+    {
+      "question": "What partitioning strategy does the user_events table use?",
+      "ground_truth": "The user_events table is partitioned by event_date (daily) and event_type for partition pruning.",
+      "answer": "Add the table to the data quality monitoring dashboard 6. Document the table in data_catalog. Fix: The funnel query does a large cross join. Fix: The partition exists in the table.",
+      "rouge_l": 0.125,
+      "context_precision": 1.0,
+      "context_recall": 0.375,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "data_governance.md",
+        "etl_pipeline_guide.md",
+        "incident_runbook.md",
+        "data_catalog.md"
+      ],
+      "mrr_hybrid": 0.25,
+      "recall_hybrid": 0.5
+    },
+    {
+      "question": "What is the fraud_risk_score threshold for blocking an order?",
+      "ground_truth": "A fraud_risk_score of 0.85 or above triggers an automatic order hold. The model can return decisions of pass, hold, or block.",
+      "answer": "This is the source table for all downstream behavioral analytics. velocity_*` - **Framework:** LightGBM - **Training cadence:** Daily retrain - **Output:** `fraud_risk_score` \u2014 written to `user_risk_features` and published to Kafka topic `fraud_scores` for real-time order blocking - **Threshold:** 0. io --- ## Glossary - **Micro-batch:** Spark Structured Streaming with a trigger interval (not continuous) - **Z-ordering:** Delta Lake data layout optimization for multi-dimensional range queries - **Watermark:** Spark Streaming threshold for late data handling - **MERGE:** Delta Lake upsert operation combining INSERT and UPDATE - **Medallion:** Bronze/Silver/Gold layered data architecture pattern. username` \u2192 replaced with null - All `user_events` rows for the user \u2192 hard deleted (Bronze and Silver) - All `sessions` rows \u2192 user_id set to null (anonymous) - Feature store online: immediate deletion - Feature store offline: partition drop on next daily run 5.",
+      "rouge_l": 0.0909,
+      "context_precision": 0.4,
+      "context_recall": 0.4615,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "ml_feature_store.md",
+        "data_governance.md",
+        "etl_pipeline_guide.md",
+        "data_catalog.md"
+      ],
+      "mrr_hybrid": 1.0,
+      "recall_hybrid": 0.5
+    },
+    {
+      "question": "How should I handle an OOM error in the daily_aggregator?",
+      "ground_truth": "The gold.funnel_metrics task is the heaviest. Increase driver memory by adding --driver-memory 20g to the spark-submit command.",
+      "answer": "If it does, there is a bug in the user_sync pipeline. In the streaming job config, set `spark. the Gold job doesn't handle. In the meantime, trigger a run with `--skip-column-validation` flag.",
+      "rouge_l": 0.1404,
+      "context_precision": 1.0,
+      "context_recall": 0.3,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.7,
+      "retrieved_sources": [
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 0.0,
+      "recall_hybrid": 0.0
+    },
+    {
+      "question": "What is the Kafka consumer group name for the event_ingestor?",
+      "ground_truth": "The Kafka consumer group for the event_ingestor is event_ingestor_prod.",
+      "answer": "Check Spark Streaming dashboard for batch duration \u2014 if batches are taking longer than the trigger interval, they are queuing up ### Common causes and fixes **Cause A: Kafka partition. Check the materialisation job for that feature group in the scheduler UI ### Common causes **Cause A: Materialisation job failed** The daily materialisation job reads from Delta Lake and writes to Redis. events is more than 5 minutes behind Kafka ### Triage 1. Check Kafka consumer lag: run `kafka_lag_check.",
+      "rouge_l": 0.1348,
+      "context_precision": 1.0,
+      "context_recall": 0.8,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "retrieved_sources": [
+        "etl_pipeline_guide.md",
+        "incident_runbook.md"
+      ],
+      "mrr_hybrid": 1.0,
+      "recall_hybrid": 0.75
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "question": "What is the primary key of the users table?",
+    "ground_truth": "The primary key of the users table is user_id, which is a UUID type. It is generated at registration and is immutable."
+  },
+  {
+    "question": "What columns does the orders table have?",
+    "ground_truth": "The orders table has order_id (UUID primary key), user_id (foreign key), product_id, status, amount_usd, currency, amount_local, exchange_rate, created_at, updated_at, payment_method, refunded_at, and metadata columns."
+  },
+  {
+    "question": "How often does the event_ingestor pipeline run?",
+    "ground_truth": "The event_ingestor is a continuous Spark Structured Streaming pipeline that runs as a micro-batch every 2 minutes."
+  },
+  {
+    "question": "What is the SLA for the Silver layer lag in the event_ingestor pipeline?",
+    "ground_truth": "The SLA states that Silver layer lag must not exceed 5 minutes from Kafka produce time."
+  },
+  {
+    "question": "How should I fix a corrupted checkpoint in the event_ingestor job?",
+    "ground_truth": "Delete the checkpoint directory using: aws s3 rm s3://datachat-checkpoints/event_ingestor/ --recursive, then restart the job. It will re-read from the last committed Kafka offset. Afterwards run the deduplication job with: python ops/deduplicate_events.py --hours-back 2"
+  },
+  {
+    "question": "What is the retention policy for the users table?",
+    "ground_truth": "The users table has a 7-year retention policy due to GDPR compliance requirements."
+  },
+  {
+    "question": "What is the churn prediction model version and what threshold triggers an email campaign?",
+    "ground_truth": "The churn prediction model is version 3.2, built with XGBoost. A churn_probability_score of 0.65 or above triggers an automated email campaign."
+  },
+  {
+    "question": "What PII level is the email column in the users table?",
+    "ground_truth": "The email column in the users table is classified as Level 2 PII, which means it is directly identifiable. It is tokenised in downstream tables."
+  },
+  {
+    "question": "What does the daily_aggregator pipeline output?",
+    "ground_truth": "The daily_aggregator produces three Gold layer tables: gold.daily_active_users, gold.revenue_summary, and gold.funnel_metrics."
+  },
+  {
+    "question": "How do I perform a GDPR erasure for a user?",
+    "ground_truth": "Run python gdpr/erasure.py --user-id <uuid> and then verify with python gdpr/verify_erasure.py --user-id <uuid>. The erasure must complete within 30 days of the request."
+  },
+  {
+    "question": "What is the online feature store backend and what is its latency SLA?",
+    "ground_truth": "The online feature store is backed by Redis Cluster. The latency SLA is p99 under 5ms."
+  },
+  {
+    "question": "What partitioning strategy does the user_events table use?",
+    "ground_truth": "The user_events table is partitioned by event_date (daily) and event_type for partition pruning."
+  },
+  {
+    "question": "What is the fraud_risk_score threshold for blocking an order?",
+    "ground_truth": "A fraud_risk_score of 0.85 or above triggers an automatic order hold. The model can return decisions of pass, hold, or block."
+  },
+  {
+    "question": "How should I handle an OOM error in the daily_aggregator?",
+    "ground_truth": "The gold.funnel_metrics task is the heaviest. Increase driver memory by adding --driver-memory 20g to the spark-submit command."
+  },
+  {
+    "question": "What is the Kafka consumer group name for the event_ingestor?",
+    "ground_truth": "The Kafka consumer group for the event_ingestor is event_ingestor_prod."
+  }
+]

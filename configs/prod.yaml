@@ -1,0 +1,40 @@
+# configs/prod.yaml
+# Production overrides — extends base.yaml
+# This generally has strict security,lower rate limits,Auth enabled
+app:
+  log_level: "WARNING"
+
+ingestion:
+  embedding:
+    batch_size: 25
+    max_retries: 5
+  vector_store:
+    provider: "databricks"
+    ef_construction: 256
+    ef_search: 150
+
+retrieval:
+  hyde:
+    enabled: true
+  reranker:
+    enabled: true
+
+generation:
+  llm:
+    model: "gpt-4o"
+    timeout_seconds: 45
+
+api:
+  workers: 8
+  cors_origins:
+    - "https://your-frontend.example.com"
+  rate_limit:
+    requests_per_minute: 120
+    burst: 20
+  auth:
+    enabled: true
+
+evaluation:
+  mlflow:
+    tracking_uri: "databricks"        # We can use Databricks MLflow in prod
+  batch_size: 100
